@@ -52,7 +52,7 @@ use std::sync::Arc;
 use std::sync::atomic::{Ordering, AtomicBool};
 use std::cell::UnsafeCell;
 use crossbeam::sync::MsQueue;
-use futures::task::{park, Task};
+use futures::task::{current, Task};
 use futures::{Future, Poll, Async};
 
 #[derive(Debug)]
@@ -113,7 +113,7 @@ impl<T> FutMutex<T> {
     /// This function will panic if called outside the context of a future's task.
     pub fn poll_lock(&self) -> Async<FutMutexGuard<T>> {
         if self.inner.locked.compare_and_swap(false, true, Ordering::SeqCst) {
-            self.inner.wait_queue.push(park());
+            self.inner.wait_queue.push(current());
             Async::NotReady
         } else {
             Async::Ready(FutMutexGuard{ inner: self })
@@ -142,7 +142,7 @@ impl<T> FutMutex<T> {
 
         while !self.inner.locked.load(Ordering::SeqCst) {
             match self.inner.wait_queue.try_pop() {
-                Some(task) => task.unpark(),
+                Some(task) => task.notify(),
                 None => return
             }
         }
@@ -249,16 +249,16 @@ impl<T> Drop for FutMutexAcquired<T> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use futures::executor::{self, Unpark};
+    use futures::executor::{self, Notify};
     use futures::future;
     use futures::stream::{self, Stream};
     use std::thread;
 
-    pub fn unpark_noop() -> Arc<Unpark> {
+    pub fn unpark_noop() -> Arc<Notify> {
         struct Foo;
 
-        impl Unpark for Foo {
-            fn unpark(&self) {}
+        impl Notify for Foo {
+            fn notify(&self, id: usize) {}
         }
 
         Arc::new(Foo)

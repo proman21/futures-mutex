@@ -11,5 +11,5 @@ keywords = ["future", "futures", "mutex", "concurrency"]
 categories = ["asynchronous", "concurrency"]
 
 [dependencies]
-futures = "0.1.11"
+futures = "0.1.14"
 crossbeam = "0.2.10"
