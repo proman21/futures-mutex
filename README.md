@@ -11,7 +11,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-futures-mutex = "0.1.2"
+futures-mutex = "0.2.0"
 ```
 
 Then, add this to your crate:
@@ -24,5 +24,5 @@ extern crate futures-mutex;
 
 ## License
 
-`futures-mutex` is distributed under the GNU GPLv3. See the LICENSE file for
-the full text of the license.
+`futures-mutex` is distributed under the Apache License v2.0. See the LICENSE
+file for the full text of the license.
