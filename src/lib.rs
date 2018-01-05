@@ -81,6 +81,7 @@ unsafe impl<T: Send> Sync for Inner<T> {}
 ///
 /// *As of now, there is no strong guarantee that a particular handle of the lock won't be starved. Hopefully the use of the queue will prevent this, but I haven't tried to test that.*
 #[derive(Debug)]
+#[deprecated(since = "0.2.1", note = "Crate is no longer being maintained")]
 pub struct FutMutex<T> {
     inner: Arc<Inner<T>>
 }
@@ -163,6 +164,7 @@ impl<T> Clone for FutMutex<T> {
 /// implementing `Deref` and `DerefMut` to `T`. When dropped, the lock will be
 /// unlocked.
 #[derive(Debug)]
+#[deprecated(since = "0.2.1", note = "Crate is no longer being maintained")]
 pub struct FutMutexGuard<'a, T: 'a> {
     inner: &'a FutMutex<T>
 }
@@ -188,6 +190,7 @@ impl<'a, T> Drop for FutMutexGuard<'a, T> {
 
 /// Future returned by `FutMutex::lock` which resolves to a guard when a lock is acquired.
 #[derive(Debug)]
+#[deprecated(since = "0.2.1", note = "Crate is no longer being maintained")]
 pub struct FutMutexAcquire<T> {
     inner: FutMutex<T>
 }
@@ -215,6 +218,7 @@ impl<T> Future for FutMutexAcquire<T> {
 /// This value works like `FutMutexGuard<T>`, providing a RAII guard to the value `T` through
 /// `Deref` and `DerefMut`. Will unlock the lock when dropped; the original `FutMutex` can be
 /// recovered with `unlock()`.
+#[deprecated(since = "0.2.1", note = "Crate is no longer being maintained")]
 pub struct FutMutexAcquired<T> {
     inner: FutMutex<T>
 }

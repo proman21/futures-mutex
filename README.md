@@ -1,4 +1,6 @@
-# futures-mutex
+# futures-mutex [DEPRECATED]
+
+**I will no longer be supporting this project. It is no longer used by myself and it has significant issues relating to deadlocks. A deprecation warning will appear in Rust stating this.**
 
 *A Mutex for the Future(s)*
 
@@ -11,7 +13,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-futures-mutex = "0.2.0"
+futures-mutex = "0.2.1"
 ```
 
 Then, add this to your crate:
